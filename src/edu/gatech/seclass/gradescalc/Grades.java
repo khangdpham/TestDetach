@@ -1,4 +1,4 @@
-package edu.gatech.seclass.gradescalc
+package edu.gatech.seclass.gradescalc;
 
 public class Grades {
 	public Grades(String db){

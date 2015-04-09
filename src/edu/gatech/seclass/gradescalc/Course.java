@@ -1,15 +1,19 @@
-package edu.gatech.seclass.gradescalc
+package edu.gatech.seclass.gradescalc;
+
+import java.util.HashSet;
 
 public class Course {
-	public Course(Students students, Grades grades){
-		
+	Students students;
+	Grades grades;
+	public Course(Students s, Grades g){
+		students = s;
+		grades = g;
 	
 	}
 	
 	public int getNumStudents(){
-		int numStudent = 0 ;
-		
-		return numStudent;
+		return students.getStudentsList().size();
+		//return 16;
 	}
 	
 	public int getNumAssignments(){
@@ -30,6 +34,11 @@ public class Course {
 	public Student getStudentByName(String sName){
 		
 		
+		return null;
+	}
+
+	public Student getStudentByID(String string) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
