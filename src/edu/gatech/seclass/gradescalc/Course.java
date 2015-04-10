@@ -5,41 +5,47 @@ import java.util.HashSet;
 public class Course {
 	Students students;
 	Grades grades;
-	public Course(Students s, Grades g){
+	int numOfProjects;
+	int numOfAssignments;
+	public Course(Students s, Grades g) {
 		students = s;
 		grades = g;
-	
+		numOfProjects = this.findNumberOfProjects();
+		numOfAssignments = this.findNumberOfAssignments();
+		this.setAttendance();
 	}
-	
-	public int getNumStudents(){
-		return students.getStudentsList().size();
-		//return 16;
+	private void setAttendance() {
+		students.updateAttendance(grades);
 	}
-	
-	public int getNumAssignments(){
-		int numAssgmnt = 0 ;
-		
-		return numAssgmnt;
+	public int getNumStudents() {
+		return students.getStudentsSize();
 	}
-	public int getNumProjects(){
-		int numPrj = 0 ;
-		
-		return numPrj;
+	public int getNumAssignments() {
+		return numOfAssignments;
 	}
-	
-	public HashSet<Student> getStudents(){
-		
-		return null;
+	public int getNumProjects() {
+		return numOfProjects;
 	}
-	public Student getStudentByName(String sName){
-		
-		
-		return null;
+	public HashSet < Student > getStudents() {
+		return students.getStudentsHashSet();
+	}
+	public Student getStudentByName(String sName) {
+		return students.getStudentByName(sName);
+	}
+	public Student getStudentByID(String string) {
+		return students.getStudentById(string);
 	}
 
-	public Student getStudentByID(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	private int findNumberOfProjects() {
+		int num = DatabaseHelper.getNumberOfFields(grades.getDatabaseName(), 3);
+		// Return number of projects in the course
+		return num - 1;
+	}
+	private int findNumberOfAssignments() {
+		int num = DatabaseHelper.getNumberOfFields(grades.getDatabaseName(), 1);
+
+		// Return number of assignments in the course
+		return num - 1;
 	}
 
 }

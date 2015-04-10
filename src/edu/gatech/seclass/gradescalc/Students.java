@@ -1,83 +1,69 @@
 package edu.gatech.seclass.gradescalc;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.util.Set;
 
 public class Students {
 	private String studentDB;
-	private List<Student> students;
-	public Students(String db){
-		studentDB=db;
-		students = establishStudentDB();
+
+	private HashSet < Student > hashset;
+
+	public Students(String db) {
+		studentDB = db;
+		hashset = establishStudentDB();
 	}
-	public List <Student> getStudentsList(){
+	public String getDatabaseName() {
+		return studentDB;
+	}
+	public HashSet < Student > getStudentsHashSet() {
+		return hashset;
+	}
+	public int getStudentsSize() {
+		return hashset.size();
+	}
+	public Student getStudentByName(String name) {
+		Set < Student > s_set = this.hashset;
+		for (Student s: s_set) {
+			if (s.getName().compareTo(name) == 0) return s;
+		}
+		return null;
+	}
+	public Student getStudentById(String Id) {
+		Set < Student > s_set = this.hashset;
+		for (Student s: s_set) {
+			if (s.getGtid().compareTo(Id) == 0) return s;
+		}
+		return null;
+	}
+	private HashSet < Student > establishStudentDB() {
+
+		HashSet < Student > students = new HashSet < Student > ();
+		List < String > students_data = DatabaseHelper.getRawDatabase(studentDB, 0);
+		List < String > team_data = DatabaseHelper.getRawDatabase(studentDB, 1);
+		for (String s: students_data) {
+			Student student = this.processStudentData(s);
+			student.setTeam(processTeamData(student.getName(), team_data));
+			students.add(student);
+		}
 		return students;
 	}
-	private List <Student> establishStudentDB() {
-		
-		List<Student> students = new ArrayList<Student>();
-        try {
-            FileInputStream file = new FileInputStream(new File(studentDB));
+	private Student processStudentData(String rawStr) {
+		String[] tokens = rawStr.split("#");
+		return (new Student(tokens[0], tokens[1]));
 
-            //Create Workbook instance holding reference to .xlsx file
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-
-            //Get first/desired sheet from the workbook
-            XSSFSheet sheet = workbook.getSheetAt(0);
-
-            //Iterate through each rows one by one
-
-            Iterator < Row > rowIterator = sheet.iterator();
-            String entry = "";
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                if(row.getRowNum() == 0) continue;
-                //For each row, iterate through all the columns
-                Iterator < Cell > cellIterator = row.cellIterator();
-                entry = "";
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-
-                    //Check the cell type and format accordingly	                    
-
-                    switch (cell.getCellType()) {
-                        case Cell.CELL_TYPE_NUMERIC:
-                            int val = (int) cell.getNumericCellValue();
-                            entry += val + "#";
-                            //System.out.print(cell.getNumericCellValue() + "t");
-                            break;
-                        case Cell.CELL_TYPE_STRING:
-                            entry += cell.getStringCellValue() + "#";
-                            //System.out.print(cell.getStringCellValue() + "t");
-                            break;
-                    }
-
-                }
-                //entry = entry.replaceAll("+$","");
-                students.add(processData(entry));
-               // System.out.println(entry);
-                System.out.println("");
-            }
-            file.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return students;
-    }
-    private Student processData(String rawStr){
-    	//System.out.println(rawStr);
-    	String[] tokens = rawStr.split("#");
-    	return (new Student(tokens[0],tokens[1]));
-    	
-    }
-
+	}
+	private String processTeamData(String s_name, List < String > team_data) {
+		for (String s: team_data) {
+			if (s.toLowerCase().contains(s_name.toLowerCase())) {
+				return (s.split("#")[0]);
+			}
+		}
+		return "";
+	}
+	public void updateAttendance(Grades grades) {
+		for (Student s: hashset)
+			s.setAttendance(grades.getAttendance(s.getGtid()));
+	}
 
 }
