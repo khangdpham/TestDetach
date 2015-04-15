@@ -3,11 +3,18 @@ package edu.gatech.seclass.gradescalc;
 import java.util.List;
 
 public class Grades {
-	String gradesDB;
-	List < String > grade_data;
+	private String gradesDB;
+	private List < String > attendance_data;
+	private List < String > assignments_data;
+	private List < String > projects_data;
+	private List <String> assignment_avg;
+	private List <String> project_avg;
+	
 	public Grades(String db) {
 		gradesDB = db;
-		grade_data = DatabaseHelper.getRawDatabase(db, 0);
+		attendance_data  = DatabaseHelper.getRawDatabase(db, 0);
+		assignments_data = DatabaseHelper.getRawDatabase(db, 1);
+		projects_data    = DatabaseHelper.getRawDatabase(db, 2);
 
 	}
 
@@ -16,10 +23,24 @@ public class Grades {
 	}
 
 	public int getAttendance(String gtid) {
-		for (String s: grade_data) {
+		for (String s: attendance_data) {
 			if (s.contains(gtid)) 
 				return Integer.parseInt(s.split("#")[1]);
 		}
 		return 0;
+	}
+	public String getAssigmentGrade(String gtid) {
+		for (String s: assignments_data) {
+			if (s.contains(gtid)) 
+				return s;
+		}
+		return "";
+	}
+	public String getProjectGrade(String gtid) {
+		for (String s: projects_data) {
+			if (s.contains(gtid)) 
+				return s;
+		}
+		return "";
 	}
 }

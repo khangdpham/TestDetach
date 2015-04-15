@@ -41,6 +41,7 @@ public class Students {
 		HashSet < Student > students = new HashSet < Student > ();
 		List < String > students_data = DatabaseHelper.getRawDatabase(studentDB, 0);
 		List < String > team_data = DatabaseHelper.getRawDatabase(studentDB, 1);
+		
 		for (String s: students_data) {
 			Student student = this.processStudentData(s);
 			student.setTeam(processTeamData(student.getName(), team_data));
@@ -50,7 +51,7 @@ public class Students {
 	}
 	private Student processStudentData(String rawStr) {
 		String[] tokens = rawStr.split("#");
-		return (new Student(tokens[0], tokens[1]));
+		return (new Student(tokens[0], tokens[1],null));
 
 	}
 	private String processTeamData(String s_name, List < String > team_data) {
