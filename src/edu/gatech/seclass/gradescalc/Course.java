@@ -1,7 +1,9 @@
 package edu.gatech.seclass.gradescalc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Course {
 	Students students;
@@ -64,12 +66,11 @@ public class Course {
 		
 	}
 	public int getAverageAssignmentsGrade(Student student) {
-		String grade_str = grades.getAssigmentGrade(student.getGtid());
-		System.out.println("Student " + student.getGtid());
-		System.out.println(grade_str);
-		
-		// TODO Auto-generated method stub
-		return 0;
+		int average = 0 ;
+		String[]tokens = grades.getAssigmentGrade(student.getGtid()).split("#");
+		for (int i = 1; i<tokens.length ;i++)
+			average += Integer.parseInt(tokens[i]);
+		return average/this.numOfAssignments;
 	}
 	public int getAverageProjectsGrade(Student student) {
 
