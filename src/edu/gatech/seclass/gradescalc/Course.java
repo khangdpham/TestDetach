@@ -101,5 +101,17 @@ public class Course {
     }
 
   }
+  
+  public void addStudent(Student student1, Course course) {
+		// TODO Auto-generated method stub
+  }
+  public void addProject(String string) {
+	// TODO Auto-generated method stub
+	
+  }
+  public void addGradesForProject(String project1, Grades grades2) {
+	// TODO Auto-generated method stub
+	
+  }
 
 }

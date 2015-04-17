@@ -186,5 +186,36 @@ public class CourseTest {
     ////////////////////
     //NO CHANGES ENDS //
     ////////////////////
+    // New tests
+    @Test
+    public void testAddStudent() {
+    	Student student1 = new Student("Kevin Smith", "901234599", course);
+    	student1.setTeam("Team 2");
+        course.addStudent(student1,course);
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(96, course.getAverageProjectsGrade(student1));
+    }
+    @Test
+    public void testAddProject() {
+        course.addProject("Project: Quick Pick");
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(5, course.getNumProjects());
+        course.addAssignment("Project: Sprint");
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(6, course.getNumAssignments());
+    }
+    @Test
+    public void testAddGradesForProject() {
+        Student student1 = new Student("Josepha Jube", "901234502", course);
+        Student student2 = new Student("Grier Nehling", "901234503", course);
+    	String project1= "Project: Quick Pick";
+        course.addProject(project1);
+        course.updateGrades(new Grades(GRADES_DB));
+        course.addGradesForProject(project1, grades);
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(92, course.getAverageProjectsGrade(student1));
+        assertEquals(95, course.getAverageAssignmentsGrade(student2));
+
+    }
 }
     
