@@ -1,9 +1,9 @@
 package edu.gatech.seclass.gradescalc;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Course {
 	Students students;
@@ -52,8 +52,8 @@ public class Course {
 		return num - 1;
 	}
 	public void addAssignment(String assigmentName) {
-		
-		// TODO Auto-generated method stub
+		DatabaseHelper.addNewField(grades.getDatabaseName(),1, assigmentName);
+		numOfAssignments = findNumberOfAssignments();
 		
 	}
 	public void updateGrades(Grades g) {
@@ -73,14 +73,28 @@ public class Course {
 		return average/this.numOfAssignments;
 	}
 	public int getAverageProjectsGrade(Student student) {
-
-		// TODO Auto-generated method stub
-		return 0;
+		double total = grades.getProjectGrade(student.getGtid(),student.getTeam());
+		return (int) total/numOfProjects;
 	}
 	public void addIndividualContributions(String projectName1,
 			HashMap<Student, Integer> contributions1) {
-		// TODO Auto-generated method stub
+		System.out.println("Update project :" + projectName1);
+		Iterator it = contributions1.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry pair = (Map.Entry)it.next();
+			System.out.println(pair.getKey());
+			System.out.println(pair.getValue().toString());
+			
+		}
 		
 	}
 
 }
+
+
+
+
+
+
+
+

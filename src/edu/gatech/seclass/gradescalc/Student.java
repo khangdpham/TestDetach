@@ -13,17 +13,14 @@ public class Student {
         attendance = 0;
         gtid = i;
         name = n;
-        team = "";
         course = c;
-        if(c != null){
-        /*
-        assignment_grade = c.grades.getAssigmentGrade(i);
-        projects_grade   = c.grades.getProjectGrade(i);
-        System.out.println("DEBUG: "+assignment_grade );
-        System.out.println("DEBUG: "+projects_grade );
-        */
-        }
+        if(course!= null)
+        	team = c.getStudentByID(i).getTeam();
+        
 
+    }
+    public String toString(){
+    	return "Student:"+name+"\nGTID:"+gtid;
     }
     public Course getCourse() {
         return course;
@@ -47,5 +44,6 @@ public class Student {
     public void setAttendance(int a){
     	attendance = a;
     }
+
 
 }

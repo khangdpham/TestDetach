@@ -62,6 +62,7 @@ public class Students {
 		}
 		return "";
 	}
+	
 	public void updateAttendance(Grades grades) {
 		for (Student s: hashset)
 			s.setAttendance(grades.getAttendance(s.getGtid()));

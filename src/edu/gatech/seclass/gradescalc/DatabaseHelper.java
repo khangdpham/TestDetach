@@ -2,12 +2,14 @@ package edu.gatech.seclass.gradescalc;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -79,6 +81,74 @@ public class DatabaseHelper {
 			e.printStackTrace();
 		}
 		return noOfColumns;
+	}
+	public static void updateCell(String db_name, int sheetNum,int column ,String data){
+		try {
+			FileInputStream inputXls = new FileInputStream(new File(db_name));
+
+			//Create Workbook instance holding reference to .xlsx file
+			XSSFWorkbook workbook = new XSSFWorkbook(inputXls);
+
+			//Get first/desired sheet from the workbook
+			XSSFSheet sheet = workbook.getSheetAt(sheetNum);
+
+			//Iterate through each rows one by one
+
+			Iterator < Row > rowIterator = sheet.iterator();
+
+			Row row = rowIterator.next();
+			if(row.getRowNum() == 0){
+				Iterator < Cell > cellIterator = row.cellIterator();
+				
+				while (cellIterator.hasNext()){ 
+					cellIterator.next();
+					
+				}
+					
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void addNewField(String db_name, int sheetNum,String data){
+		int count = 0;
+		try {
+			FileInputStream inputXls = new FileInputStream(new File(db_name));
+
+			//Create Workbook instance holding reference to .xlsx file
+			XSSFWorkbook workbook = new XSSFWorkbook(inputXls);
+
+			//Get first/desired sheet from the workbook
+			XSSFSheet sheet = workbook.getSheetAt(sheetNum);
+
+			//Iterate through each rows one by one
+
+			Iterator < Row > rowIterator = sheet.iterator();
+
+			Row row = rowIterator.next();
+			if(row.getRowNum() == 0){
+				Iterator < Cell > cellIterator = row.cellIterator();
+				
+				while (cellIterator.hasNext()){ 
+					cellIterator.next();
+					count++;
+				}
+					
+			}
+				if( sheet.getRow(0).getCell(count) == null ){
+					XSSFCell cell = sheet.getRow(0).createCell(count);
+					cell.setCellStyle(sheet.getRow(0).getCell(count-1).getCellStyle());
+					cell.setCellValue(data);
+				FileOutputStream outputXls = new FileOutputStream(new File(db_name));
+				workbook.write(outputXls);
+				outputXls.close();
+				}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

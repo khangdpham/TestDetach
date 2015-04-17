@@ -4,18 +4,18 @@ import java.util.List;
 
 public class Grades {
 	private String gradesDB;
-	private List < String > attendance_data;
-	private List < String > assignments_data;
-	private List < String > projects_data;
-	private List <String> assignment_avg;
-	private List <String> project_avg;
+	private List < String > class_attendance;
+	private List < String > assignments_grade;
+	private List < String > team_grade;
+	private List < String > projects_contrib;
+	
 	
 	public Grades(String db) {
 		gradesDB = db;
-		attendance_data  = DatabaseHelper.getRawDatabase(db, 0);
-		assignments_data = DatabaseHelper.getRawDatabase(db, 1);
-		projects_data    = DatabaseHelper.getRawDatabase(db, 2);
-
+		class_attendance  = DatabaseHelper.getRawDatabase(db, 0);
+		assignments_grade = DatabaseHelper.getRawDatabase(db, 1);
+		projects_contrib  = DatabaseHelper.getRawDatabase(db, 2);
+		team_grade        = DatabaseHelper.getRawDatabase(db, 3);
 	}
 
 	public String getDatabaseName() {
@@ -23,24 +23,44 @@ public class Grades {
 	}
 
 	public int getAttendance(String gtid) {
-		for (String s: attendance_data) {
+		for (String s: class_attendance) {
 			if (s.contains(gtid)) 
 				return Integer.parseInt(s.split("#")[1]);
 		}
 		return 0;
 	}
 	public String getAssigmentGrade(String gtid) {
-		for (String s: assignments_data) {
+		for (String s: assignments_grade) {
 			if (s.contains(gtid)) 
 				return s;
 		}
 		return "";
 	}
-	public String getProjectGrade(String gtid) {
-		for (String s: projects_data) {
-			if (s.contains(gtid)) 
-				return s;
+
+	public double getProjectGrade(String gtid,String team) {
+		String contrib = "";
+		String grade   = "";
+		for(String s: projects_contrib){
+			if(s.contains(gtid))
+				contrib = s;
 		}
-		return "";
+		for(String g: team_grade){
+			if(g.contains(team))
+				grade = g;
+		}
+		String[] contrib_arr = contrib.split("#");
+		String[] grade_arr = grade.split("#");
+		double average = 0;
+		for(int i = 1 ; i < contrib_arr.length && i < grade_arr.length ; i++){
+			average +=( Double.parseDouble(contrib_arr[i])/100*Integer.parseInt(grade_arr[i]));
+			
+		}
+		return average;
 	}
+
 }
+
+
+
+
+
