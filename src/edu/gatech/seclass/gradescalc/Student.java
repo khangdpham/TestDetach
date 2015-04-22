@@ -8,14 +8,12 @@ public class Student {
   private String email;
   private Course course;
 
-
   public Student(String n, String i) {
-	    attendance = 0;
-	    gtid = i;
-	    name = n;
-	    //course = c;
-	    //if (course != null) team = c.getStudentByID(i).getTeam();
-	  }
+    attendance = 0;
+	gtid = i;
+    name = n;
+  }
+  
   public String toString() {
     return "Student:" + name + "\nGTID:" + gtid;
   }
@@ -28,7 +26,6 @@ public class Student {
   public String getGtid() {
     return gtid;
   }
-
   public String getName() {
     return name;
   }
@@ -41,12 +38,11 @@ public class Student {
   public void setAttendance(int a) {
     attendance = a;
   }
-public String getEmail() {
+  public String getEmail() {
 	return email;
-}
-
-public void setEmail(String e) {
-	email = e;
-}
+  }
+  public void setEmail(String e) {
+    email = e;
+  }
 
 }

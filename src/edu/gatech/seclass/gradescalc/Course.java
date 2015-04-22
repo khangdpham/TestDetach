@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 public class Course {
   Students students;
   Grades grades;
@@ -17,6 +21,7 @@ public class Course {
     grades = g;
     numOfProjects = this.findNumberOfProjects();
     numOfAssignments = this.findNumberOfAssignments();
+    gradeFormula= "ATT * 0.2 + AAG * 0.4 + APG * 0.4";
     this.setAttendance();
 
   }
@@ -24,10 +29,10 @@ public class Course {
     students.updateAttendance(grades);
   }
   public String getTeam(Student student) {
-	 return students.getStudentById(student.getGtid()).getTeam();
+   return students.getStudentById(student.getGtid()).getTeam();
   }
   public int getAttendance(Student student) {
-	  return students.getStudentById(student.getGtid()).getAttendance();
+    return students.getStudentById(student.getGtid()).getAttendance();
   }
   public int getNumStudents() {
     return students.getStudentsSize();
@@ -110,28 +115,43 @@ public class Course {
   }
   
   public void addStudent(Student student1, Course course) {
-		// TODO Auto-generated method stub
+    // TODO Auto-generated method stub
   }
   public void addProject(String string) {
-	// TODO Auto-generated method stub
-	
+  // TODO Auto-generated method stub
+  
   }
   public void addGradesForProject(String project1, Grades grades2) {
-	// TODO Auto-generated method stub
-	
+  // TODO Auto-generated method stub
+  
   }
 public String getFormula() {
-	return gradeFormula;
+  return gradeFormula;
 }
 public void setFormula(String text) {
-	gradeFormula = text;
-	
+  gradeFormula = text;
+  
 }
 public String getEmail(Student student) {
-	return student.getEmail();
+  return student.getEmail();
 }
 public String getOverallGrade(Student student) {
-	return "Taco";
+  int overallGrade = 0 ;
+  String str = gradeFormula;
+  str = str.replaceAll("ATT",String.valueOf(getAttendance(student)));
+  str = str.replaceAll("AAG",String.valueOf(getAverageAssignmentsGrade(student)));
+  str = str.replaceAll("APG",String.valueOf(getAverageProjectsGrade(student)));
+  ScriptEngineManager manager = new ScriptEngineManager();
+  ScriptEngine engine = manager.getEngineByName("js"); 
+  try{
+    Object result = engine.eval(str);
+    overallGrade =(int) Math.round(Double.parseDouble(result.toString()));
+  }
+  catch (ScriptException e){
+    throw new GradeFormulaException(e.getMessage());
+    
+  }
+  return String.valueOf(overallGrade);
 }
 
 }
