@@ -10,6 +10,7 @@ public class Course {
   Grades grades;
   int numOfProjects;
   int numOfAssignments;
+  String gradeFormula;
   public Course(Students s, Grades g) {
 
     students = s;
@@ -21,6 +22,12 @@ public class Course {
   }
   private void setAttendance() {
     students.updateAttendance(grades);
+  }
+  public String getTeam(Student student) {
+	 return students.getStudentById(student.getGtid()).getTeam();
+  }
+  public int getAttendance(Student student) {
+	  return students.getStudentById(student.getGtid()).getAttendance();
   }
   public int getNumStudents() {
     return students.getStudentsSize();
@@ -83,7 +90,7 @@ public class Course {
     return (int) Math.round(total / numOfAssignments);
   }
   public int getAverageProjectsGrade(Student student) {
-    double total = grades.getProjectGrade(student.getGtid(), student.getTeam());
+    double total = grades.getProjectGrade(student.getGtid(), this.getTeam(student));
     return (int) Math.round(total / numOfProjects);
   }
 
@@ -113,5 +120,18 @@ public class Course {
 	// TODO Auto-generated method stub
 	
   }
+public String getFormula() {
+	return gradeFormula;
+}
+public void setFormula(String text) {
+	gradeFormula = text;
+	
+}
+public String getEmail(Student student) {
+	return student.getEmail();
+}
+public String getOverallGrade(Student student) {
+	return "Taco";
+}
 
 }

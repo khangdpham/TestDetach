@@ -20,7 +20,7 @@ import org.junit.Test;
 // NO CHANGES STARTS //
 ///////////////////////
 
-public class CourseTest {
+public class CourseTestExtras {
 
     Students students = null;
     Grades grades = null;
@@ -102,7 +102,7 @@ public class CourseTest {
     public void testGetStudentsByName2() {
         Student student = null;
         student = course.getStudentByName("Coriander Alfsson");
-        assertEquals(98, course.getAttendance(student));
+        assertEquals(98, student.getAttendance());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class CourseTest {
     @Test
     public void testGetTeam1() {
         Student student = course.getStudentByName("Genista Parrish");
-        assertEquals("Team 3", course.getTeam(student));
+        assertEquals("Team 3", student.getTeam());
     }
     
     // New tests
@@ -131,9 +131,9 @@ public class CourseTest {
     @Test
     public void testAddGradesForAssignment() {
         String assignmentName = "Assignment: category partition";
-        Student student1 = new Student("Josepha Jube", "901234502");
-        Student student2 = new Student("Christine Schaeffer", "901234508");
-        Student student3 = new Student("Ernesta Anderson", "901234510");
+        Student student1 = new Student("Josepha Jube", "901234502", course);
+        Student student2 = new Student("Christine Schaeffer", "901234508", course);
+        Student student3 = new Student("Ernesta Anderson", "901234510", course);
         course.addAssignment(assignmentName);
         course.updateGrades(new Grades(GRADES_DB));
         HashMap<Student, Integer> grades = new HashMap<Student, Integer>();
@@ -150,7 +150,7 @@ public class CourseTest {
     @Test
     public void testGetAverageAssignmentsGrade() {
         // Rounded to the closest integer
-        Student student = new Student("Ernesta Anderson", "901234510");
+        Student student = new Student("Ernesta Anderson", "901234510", course);
         // assertEquals(90, course.getAverageAssignmentsGrade(student), 1);
         assertEquals(90, course.getAverageAssignmentsGrade(student));
     }
@@ -158,7 +158,7 @@ public class CourseTest {
     @Test
     public void testGetAverageProjectsGrade() {
         // Rounded to the closest integer
-        Student student = new Student("Rastus Kight", "901234512");
+        Student student = new Student("Rastus Kight", "901234512", course);
         // assertEquals(86, course.getAverageProjectsGrade(student), 1);
         assertEquals(86, course.getAverageProjectsGrade(student));
     }
@@ -166,8 +166,8 @@ public class CourseTest {
     @Test
     public void testAddIndividualContributions() {
         String projectName1 = "Project 2";
-        Student student1 = new Student("Josepha Jube", "901234502");
-        Student student2 = new Student("Grier Nehling", "901234503");
+        Student student1 = new Student("Josepha Jube", "901234502", course);
+        Student student2 = new Student("Grier Nehling", "901234503", course);
         HashMap<Student, Integer> contributions1 = new HashMap<Student, Integer>();
         contributions1.put(student1, 96);
         contributions1.put(student2, 87);
@@ -186,5 +186,36 @@ public class CourseTest {
     ////////////////////
     //NO CHANGES ENDS //
     ////////////////////
+    // New tests
+    @Test
+    public void testAddStudent() {
+    	Student student1 = new Student("Kevin Smith", "901234599");
+    	student1.setTeam("Team 2");
+        course.addStudent(student1,course);
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(96, course.getAverageProjectsGrade(student1));
+    }
+    @Test
+    public void testAddProject() {
+        course.addProject("Project: Quick Pick");
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(5, course.getNumProjects());
+        course.addAssignment("Project: Sprint");
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(6, course.getNumAssignments());
+    }
+    @Test
+    public void testAddGradesForProject() {
+        Student student1 = new Student("Josepha Jube", "901234502");
+        Student student2 = new Student("Grier Nehling", "901234503");
+    	String project1= "Project: Quick Pick";
+        course.addProject(project1);
+        course.updateGrades(new Grades(GRADES_DB));
+        course.addGradesForProject(project1, grades);
+        course.updateGrades(new Grades(GRADES_DB));
+        assertEquals(92, course.getAverageProjectsGrade(student1));
+        assertEquals(95, course.getAverageAssignmentsGrade(student2));
+
+    }
 }
     

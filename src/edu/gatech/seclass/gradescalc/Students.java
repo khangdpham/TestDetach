@@ -43,6 +43,7 @@ public class Students {
 		List < String > team_data = DatabaseHelper.getRawDatabase(studentDB, 1);
 		
 		for (String s: students_data) {
+			
 			Student student = this.processStudentData(s);
 			student.setTeam(processTeamData(student.getName(), team_data));
 			students.add(student);
@@ -51,7 +52,9 @@ public class Students {
 	}
 	private Student processStudentData(String rawStr) {
 		String[] tokens = rawStr.split("#");
-		return (new Student(tokens[0], tokens[1],null));
+		Student student = new Student(tokens[0], tokens[1]);
+		student.setEmail(tokens[2]);
+		return student;
 
 	}
 	private String processTeamData(String s_name, List < String > team_data) {

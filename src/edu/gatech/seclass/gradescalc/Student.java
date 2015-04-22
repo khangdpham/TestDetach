@@ -5,15 +5,17 @@ public class Student {
   private String gtid;
   private String name;
   private String team;
+  private String email;
   private Course course;
 
-  public Student(String n, String i, Course c) {
-    attendance = 0;
-    gtid = i;
-    name = n;
-    course = c;
-    if (course != null) team = c.getStudentByID(i).getTeam();
-  }
+
+  public Student(String n, String i) {
+	    attendance = 0;
+	    gtid = i;
+	    name = n;
+	    //course = c;
+	    //if (course != null) team = c.getStudentByID(i).getTeam();
+	  }
   public String toString() {
     return "Student:" + name + "\nGTID:" + gtid;
   }
@@ -39,6 +41,12 @@ public class Student {
   public void setAttendance(int a) {
     attendance = a;
   }
+public String getEmail() {
+	return email;
+}
 
+public void setEmail(String e) {
+	email = e;
+}
 
 }
